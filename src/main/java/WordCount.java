@@ -23,8 +23,12 @@ public class WordCount {
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
             StringTokenizer itr = new StringTokenizer(value.toString());
             while (itr.hasMoreTokens()) {
-                word.set(itr.nextToken());
-                context.write(word, one);
+                String[] row = itr.nextToken().split(",");
+                if (row[1].contains("Moscow")) {
+                    word.set(row[1]);
+                    IntWritable price = new IntWritable(Integer.parseInt(row[0]));
+                    context.write(word, price);
+                }
             }
         }
     }
